@@ -141,8 +141,8 @@ if on_device; then
         eval DEVICE=\${PART_REAL_$?}
         echo Flashing to $DEVICE
 
-        # If we are flashing boot partition and we are running multirom setup
-        # which can be detected by having data_subdir= in th ecmdline skip boot
+        # If we are flashing boot partition and we are running a multirom setup
+        # which can be detected by having data_subdir= in the cmdline, skip boot
         # partition flashing as it is not needed.
         mrom_check=$(grep data_subdir= /proc/cmdline)
         if test $1 = boot && [ ! -z "$mrom_check" ]; then
@@ -199,9 +199,11 @@ if on_device; then
                 fi
         fi
 
-	if [[ "$SAILFISHOS_WIPE_PARTITIONS" == "1" ]]; then
-		dd if=/dev/zero bs=1M of=$DEVDIR/$DEVICE
-	fi
+    # TODO: Just disable this for now, since you can hard-brick your device by
+    # overwriting bootloader partitions
+	#if [[ "$SAILFISHOS_WIPE_PARTITIONS" == "1" ]]; then
+	#	dd if=/dev/zero bs=1M of=$DEVDIR/$DEVICE
+	#fi
 
         dd if=$FILENAME bs=4096 of=$DEVDIR/$DEVICE
 
